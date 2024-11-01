@@ -60,38 +60,10 @@ class Adjustment:
                         
                         self.infeasible_times += 1
                         inf_app = i
-                        request = self.find_resource_request(inf_app, self.current_states[inf_app])
-                        
-                        if self.verbose:
-                            print('request:', request)
-                        #print('request:', request)
-                        safe_provisions, unsafe_provisions = self.find_resource_provisions(inf_app, request)
-                        if self.verbose:
-                            print('safe provisions:', safe_provisions, 'unsafe provisions:', unsafe_provisions)
-                            print('flexibility losses:', self.loss)
-                        #bt = time.time()
-                        selected, total_loss, all_covered = self.solve_setcover(request, safe_provisions, self.loss)
                         bt = time.time()
                         all_covered = False
-                        if all_covered:
-                            if self.verbose:
-                                print("Selected apps:", selected, "total loss:", total_loss)
-
-                            self.flex = self.flex-total_loss
-                            self.infeasible_states[inf_app].remove(self.current_states[inf_app])
-                            self.feasible_states[inf_app].append(self.current_states[inf_app])
-                            for a in selected:
-                                self.feasible_states[a] = [s for s in self.feasible_states[a]
-                                                           if s not in self.sacrificed_states[a]]
-                                self.infeasible_states[a] = self.infeasible_states[a]+self.sacrificed_states[a]
-
-                                for r in safe_provisions[a]:
-                                    self.partition[r[1]][r[0]].app = inf_app
-                                    self.partition[r[1]][r[0]].states = [self.current_states[inf_app]]
-                            print(f"adjusted {len(selected)} apps", end=",")
-                            res = {"method": "adjustment", "n_affected_apps": len(
-                                selected), "flex": self.flex, "time": time.time()-bt,  "reconfig_count":self.reconfig_count}
-                        else:
+                        if not all_covered:
+                          
                             if self.verbose:
                                 print("unable to satisfy resource request")
                             bt = time.time()
@@ -101,7 +73,7 @@ class Adjustment:
                                 # if self.verbose:
                                 print("reconfig also failed")
                                 
-                                #return results
+                                return results
                             else:
                                 self.partition = self.heu2.partition
                                 self.feasible_states = self.heu2.all_feasible_states
@@ -118,128 +90,11 @@ class Adjustment:
                         results.append({"method": "adjustment", "n_affected_apps": 0,
                                        "flex": self.flex, "time": 0,  "reconfig_count":self.reconfig_count})
                     
-                    if self.transition_times >= 1500:
+                    if self.transition_times >= 100:
                         return results
 
         print(f"Number of reconfigurations: {self.reconfig_count}")
         return results
-
-
-
-        
-
-    def find_resource_request(self, i, s):
-        # rough calculation, to be improved
-        print('resource request start')
-        flows = self.apps[i].states[s].flows
-
-        resource_request = []
-        cur_hops = {}
-        for t in range(self.T):
-            packets = []
-            used_links = {}
-            for f in flows:
-                if t % f.period == 0:
-
-                    if f.id in cur_hops and cur_hops[f.id] < len(f.txs):
-                        '''
-                        print('Current time: ',t, 'Flow period: ',f.period)
-                        print('current hop of flow',f.id, 'is ',cur_hops[f.id], '. The len of links in flow is ', len(f.txs))
-                        print('Flow links: ', f.txs)'''
-                        
-                        for i in range(cur_hops[f.id], len(f.txs)):
-                            resource_request.append(
-                            (f.txs[i], [(t//f.period)*f.period, (t//f.period+1)*f.period]))
-                            #print('Append: ',f.txs[i])
-                        
-                           
- 
-                    cur_hops[f.id] = 0
-                if cur_hops[f.id] < len(f.txs):
-                    pkt = Packet(f.id, f.txs[cur_hops[f.id]], (t//f.period+1)*f.period, f.period)
-                    packets.append(pkt)
-            packets.sort(key=lambda x: x.deadline)
-
-            for pkt in packets:
-                if self.partition[t][pkt.link].app == i and pkt.link not in used_links:
-                    used_links[pkt.link] = True
-                    cur_hops[pkt.flow_id] += 1
-
-        return resource_request
-
-
-    def find_resource_provisions(self, inf_app, resource_request):
-        safe_provisions = [[] for _ in range(self.n_apps)]
-        unsafe_provisions = [[] for _ in range(self.n_apps)]
-
-        self.sacrificed_states = [[] for _ in range(self.n_apps)]
-        for r in resource_request:
-            for t in [r[1][0], r[1][1]-1]:
-                i = self.partition[t][r[0]].app
-                if i != -1 and i != inf_app:
-                    if self.current_states[i] not in self.partition[t][r[0]].states:
-                        safe_provisions[i].append((r[0], t))
-                        self.sacrificed_states[i] += self.partition[t][r[0]].states
-                    else:
-                        unsafe_provisions[i].append((r[0], t))
-
-        self.loss = [0]*self.n_apps
-
-        for i in range(self.n_apps):
-            old_flex = self.calculate_flexibility(i, self.feasible_states[i], self.infeasible_states[i])
-            self.sacrificed_states[i] = list(set(self.sacrificed_states[i]))
-            new_flex = self.calculate_flexibility(
-                i, [s for s in self.feasible_states[i] if s not in self.sacrificed_states[i]], self.infeasible_states[i]+self.sacrificed_states[i])
-            self.loss[i] = old_flex-new_flex
-
-        return safe_provisions, unsafe_provisions
-
-
-    def calculate_flexibility(self, i, feasible_states, infeasible_states):
-        gamma = 0.9
-
-        M_prime = copy.deepcopy(self.apps[i].transitions)
-        for s in range(len(M_prime)):
-            if s in infeasible_states:
-                M_prime[s, :] = 0
-                M_prime[s, s] = 1
-        flex = 0
-        denominator = 0
-        for k in range(1, self.apps[i].k_max+1):
-            k_step_matrix = np.linalg.matrix_power(M_prime, k)
-            k_step_success_prob = sum(k_step_matrix[0, :][s] for s in feasible_states)
-            flex += (gamma**k)*k_step_success_prob
-            denominator += (gamma**k)
-        flex = flex/denominator
-        return flex
-
-    def solve_setcover(self, RR, RP, loss):
-        # Create the LP problem
-        prob = pulp.LpProblem("Weighted_Set_Cover", pulp.LpMinimize)
-
-        # Create binary variables for each subset in RP
-        x = {i: pulp.LpVariable(f"x{i}", cat='Binary') for i in range(len(RP))}
-
-        # Objective function: minimize the total weight
-        prob += 5*pulp.lpSum(x[i] for i in range(len(RP))) + pulp.lpSum(loss[i] * x[i] for i in range(len(RP)))
-
-        # Constraints: each resource request must be covered at least once
-        for e, T in RR:
-            prob += pulp.lpSum(x[i] for i in range(len(RP))
-                               if any((e, t) in RP[i] for t in range(T[0], T[1] + 1))) >= 1
-
-        # Solve the problem
-        prob.solve(pulp.PULP_CBC_CMD(msg=0))
-
-        # Extract the solution
-        selected_subsets = [i for i in range(len(RP)) if x[i].value() == 1]
-        total_loss = sum(loss[i] for i in selected_subsets)
-        all_covered = all(
-            any(any((e, t) in RP[i] for t in range(T[0], T[1] + 1)) for i in selected_subsets)
-            for e, T in RR
-        )
-        return selected_subsets, total_loss, all_covered
-    
     
 
 
@@ -253,7 +108,7 @@ if __name__ == "__main__":
     n_trials = 1
     for i in range(n_trials):
         adj = Adjustment(trial=21, n_apps=10, T=50, links=range(40),
-                         max_n_states=20, max_n_flows=7, max_n_flow_hop=4,
+                         max_n_states=20, max_n_flows=8, max_n_flow_hop=5,
                          verbose=False)
         results = adj.run()
         

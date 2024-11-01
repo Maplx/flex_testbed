@@ -127,7 +127,7 @@ class Adjustment:
                             if self.flex == 0:
                                 # if self.verbose:
                                 print("reconfig also failed")
-                                #return results
+                                return results
                             
                             else:
                                 self.partition = self.heu2.partition
@@ -146,7 +146,7 @@ class Adjustment:
                         results.append({"method": "adjustment", "n_affected_apps": 0,
                                        "flex": self.flex, "time": 0,  "reconfig_count":self.reconfig_count})
                     
-                    if self.transition_times >= 1500:
+                    if self.transition_times >= 100:
                         return results
 
         print(f"Number of reconfigurations: {self.reconfig_count}")

@@ -62,7 +62,7 @@ class Adjustment:
                             print('flexibility losses:', self.loss)
                         bt = time.time()
                         selected, total_loss, all_covered = self.solve_setcover(request, safe_provisions, self.loss)
-
+                        all_covered = False
                         if all_covered:
                             if self.verbose:
                                 print("Selected apps:", selected, "total loss:", total_loss)
