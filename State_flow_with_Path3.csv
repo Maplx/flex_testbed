@@ -1,0 +1,93 @@
+﻿Subsystem,State,Flow Description,Source,Destination,Frequency (Hz),TSN Path,Flow Count every 5ms
+ECLSS ,Crew,ECLSS_Exterior,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS ,Crew,ECLSS_Pressure,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS ,Crew,ECLSS_Thermal,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS ,Crew,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS ,Dormant,ECLSS_Exterior,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS ,Dormant,ECLSS_Pressure,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS ,Dormant,ECLSS_Thermal,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS ,Dormant,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS ,Emergency_Air Leakage,ECLSS_Exterior,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS ,Emergency_Air Leakage,ECLSS_Pressure,ECLSS,HMS-ECLSS,4000,"3,2,1",25
+ECLSS ,Emergency_Air Leakage,ECLSS_Thermal,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS ,Emergency_Air Leakage,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS ,Emergency_Air Leakage,Control Command ,ECLSS,IE,1000,"3,2,6",5
+ECLSS ,Emergency_Fire,ECLSS_Exterior,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS ,Emergency_Fire,ECLSS_Pressure,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS ,Emergency_Fire,ECLSS_Thermal,ECLSS,HMS-ECLSS,4000,"3,2,1",25
+ECLSS ,Emergency_Fire,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS ,Emergency_Fire,Control Command ,ECLSS,IE,1000,"3,2,6",5
+IE,Crew,Fire,IE,HMS-IE,1000,"6,5",5
+IE,Crew,Air_Temperature,IE,HMS-IE,1000,"6,5",5
+IE,Crew,Air_Pressure,IE,HMS-IE,1000,"6,5",5
+IE,Crew,Smoke_Detector,IE,HMS-IE,1000,"6,5",5
+IE,Crew,Pocket_Door_Sensor,IE,HMS-IE,1000,"6,5",5
+IE,Crew,Resistance-Temperature-Detector Sensors,IE,ECLSS,200,"6,7,3",1
+IE,Crew,Resistance-Pressure-Detector Sensors,IE,ECLSS,200,"6,7,3",1
+IE,Crew,Power Consumption Sensor,IE,PW2,200,"6,7,3,4",1
+IE,Dormant,Fire,IE,HMS-IE,400,"6,5",2
+IE,Dormant,Air_Temperature,IE,HMS-IE,400,"6,5",2
+IE,Dormant,Air_Pressure,IE,HMS-IE,400,"6,5",2
+IE,Dormant,Smoke_Detector,IE,HMS-IE,400,"6,5",2
+IE,Dormant,Pocket_Door_Sensor,IE,HMS-IE,400,"6,5",2
+IE,Dormant,Resistance-Temperature-Detector Sensors,IE,ECLSS,1,"6,7,3",0
+IE,Dormant,Resistance-Pressure-Detector Sensors,IE,ECLSS,1,"6,7,3",0
+IE,Dormant,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+IE,Emergency_Air Leakage,Fire,IE,HMS-IE,1000,"6,5",5
+IE,Emergency_Air Leakage,Air_Temperature,IE,HMS-IE,1000,"6,5",5
+IE,Emergency_Air Leakage,Air_Pressure,IE,HMS-IE,4000,"6,5",25
+IE,Emergency_Air Leakage,Smoke_Detector,IE,HMS-IE,1000,"6,5",5
+IE,Emergency_Air Leakage,Pocket_Door_Sensor,IE,HMS-IE,4000,"6,5",25
+IE,Emergency_Air Leakage,Resistance-Temperature-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,Emergency_Air Leakage,Resistance-Pressure-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,Emergency_Air Leakage,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+IE,Emergency_Fire,Fire,IE,HMS-IE,2000,"6,5",10
+IE,Emergency_Fire,Air_Temperature,IE,HMS-IE,2000,"6,5",10
+IE,Emergency_Fire,Air_Pressure,IE,HMS-IE,2000,"6,5",10
+IE,Emergency_Fire,Smoke_Detector,IE,HMS-IE,4000,"6,5",25
+IE,Emergency_Fire,Pocket_Door_Sensor,IE,HMS-IE,4000,"6,5",25
+IE,Emergency_Fire,Resistance-Temperature-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,Emergency_Fire,Resistance-Pressure-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,Emergency_Fire,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+PW,Healthy,Solar_PV/PV_Arrays,PW1,HMS-PW,4000,"8,4,3,2",25
+PW,Healthy,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,4000,"4,3,2",25
+PW,Healthy,Nuclear_Generator/Coolant,PW2,HMS-PW,4000,"4,3,2",25
+PW,Healthy,SPD/Converter,PW1,HMS-PW,4000,"8,4,3,2",25
+PW,Healthy,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,4,3,2",1
+PW,Healthy,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,Healthy,ECLSS_Consumption,PW1,ECLSS,200,"8,4,3",1
+PW,Healthy,IE_Consumption,PW2,IE,200,"4,8,7,6",1
+PW,Dameged_1,Solar_PV/PV_Arrays,PW1,HMS-PW,6000,"8,7,6,2",25
+PW,Dameged_1,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,4000,"4,3,2",25
+PW,Dameged_1,Nuclear_Generator/Coolant,PW2,HMS-PW,4000,"4,3,2",25
+PW,Dameged_1,SPD/Converter,PW1,HMS-PW,6000,"8,7,6,2",25
+PW,Dameged_1,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,7,6,2",1
+PW,Dameged_1,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,Dameged_1,ECLSS_Consumption,PW2,ECLSS,200,"4,3",1
+PW,Dameged_1,IE_Consumption,PW2,IE,200,"4,3,2,6",1
+PW,Dameged_2,Solar_PV/PV_Arrays,PW1,HMS-PW,4000,"8,7,6,2",25
+PW,Dameged_2,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,6000,"4,3,2",25
+PW,Dameged_2,Nuclear_Generator/Coolant,PW2,HMS-PW,6000,"4,3,2",25
+PW,Dameged_2,SPD/Converter,PW1,HMS-PW,4000,"8,7,6,2",25
+PW,Dameged_2,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,7,6,2",1
+PW,Dameged_2,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,Dameged_2,ECLSS_Consumption,PW1,ECLSS,200,"8,7,3",1
+PW,Dameged_2,IE_Consumption,PW1,IE,200,"8,7,6",1
+HMS,Nominal,Data Aggregation 1,HMS-ECLSS,HMS-Central,200,"1,5,6,7",1
+HMS,Nominal,Data Aggregation 2,HMS-IE,HMS-Central,200,"5,6,7",1
+HMS,Nominal,Data Aggregation 3,HMS-PW,HMS-Central,200,"2,3,7",1
+HMS,Nominal,AG Command 1,HMS-Central,AG1,400,"7,6",2
+HMS,Nominal,AG Command 2,HMS-Central,AG2,400,"7,8,4",2
+HMS,Emergency,Data Aggregation 1,HMS-ECLSS,HMS-Central,200,"1,5,6,7",1
+HMS,Emergency,Data Aggregation 2,HMS-IE,HMS-Central,200,"5,6,7",1
+HMS,Emergency,Data Aggregation 3,HMS-PW,HMS-Central,200,"2,3,4",1
+HMS,Emergency,AG Command 1,HMS-Central,AG1,1000,"7,6",5
+HMS,Emergency,AG Command 2,HMS-Central,AG2,1000,"7,8,4",5
+AG,Idle,Diagnostic Tests 1,AG1,HMS-Central,200,"6,7",1
+AG,Idle,Diagnostic Tests 2,AG2,HMS-Central,200,"4,3,7",1
+AG,Idle,Intervention Agent Model 1,AG1,HMS-Central,400,"6,7",2
+AG,Idle,Intervention Agent Model 2,AG2,HMS-Central,400,"4,8,7",2
+AG,Operating,Diagnostic Tests 1,AG1,HMS-Central,400,"6,7",2
+AG,Operating,Diagnostic Tests 2,AG2,HMS-Central,400,"4,8,7",2
+AG,Operating,Intervention Agent Model 1,AG1,HMS-Central,1000,"6,7",5
+AG,Operating,Intervention Agent Model 2,AG2,HMS-Central,1000,"4,3,7",5

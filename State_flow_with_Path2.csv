@@ -1,0 +1,93 @@
+﻿Subsystem,State,Flow Description,Source,Destination,Frequency (Hz),TSN Path,Flow Count every 5ms
+ECLSS,0,ECLSS_Exterior,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS,0,ECLSS_Pressure,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS,0,ECLSS_Thermal,ECLSS,HMS-ECLSS,1000,"3,2,1",5
+ECLSS,0,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS,1,ECLSS_Exterior,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS,1,ECLSS_Pressure,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS,1,ECLSS_Thermal,ECLSS,HMS-ECLSS,200,"3,2,1",1
+ECLSS,1,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS,2,ECLSS_Exterior,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS,2,ECLSS_Pressure,ECLSS,HMS-ECLSS,4000,"3,2,1",25
+ECLSS,2,ECLSS_Thermal,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS,2,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS,2,Control Command ,ECLSS,IE,1000,"3,2,6",5
+ECLSS,3,ECLSS_Exterior,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS,3,ECLSS_Pressure,ECLSS,HMS-ECLSS,2000,"3,2,1",10
+ECLSS,3,ECLSS_Thermal,ECLSS,HMS-ECLSS,4000,"3,2,1",25
+ECLSS,3,Power_Consumption,ECLSS,PW1,200,"3,7,8",1
+ECLSS,3,Control Command ,ECLSS,IE,1000,"3,2,6",5
+IE,0,Fire,IE,HMS-IE,1000,"6,5",5
+IE,0,Air_Temperature,IE,HMS-IE,1000,"6,5",5
+IE,0,Air_Pressure,IE,HMS-IE,1000,"6,5",5
+IE,0,Smoke_Detector,IE,HMS-IE,1000,"6,5",5
+IE,0,Pocket_Door_Sensor,IE,HMS-IE,1000,"6,5",5
+IE,0,Resistance-Temperature-Detector Sensors,IE,ECLSS,200,"6,7,3",1
+IE,0,Resistance-Pressure-Detector Sensors,IE,ECLSS,200,"6,7,3",1
+IE,0,Power Consumption Sensor,IE,PW2,200,"6,7,3,4",1
+IE,1,Fire,IE,HMS-IE,400,"6,5",2
+IE,1,Air_Temperature,IE,HMS-IE,400,"6,5",2
+IE,1,Air_Pressure,IE,HMS-IE,400,"6,5",2
+IE,1,Smoke_Detector,IE,HMS-IE,400,"6 ,5",2
+IE,1,Pocket_Door_Sensor,IE,HMS-IE,400,"6,5",2
+IE,1,Resistance-Temperature-Detector Sensors,IE,ECLSS,1,"6,7,3",0
+IE,1,Resistance-Pressure-Detector Sensors,IE,ECLSS,1,"6,7,3",0
+IE,1,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+IE,2,Fire,IE,HMS-IE,1000,"6,5",5
+IE,2,Air_Temperature,IE,HMS-IE,1000,"6,5",5
+IE,2,Air_Pressure,IE,HMS-IE,4000,"6,5",25
+IE,2,Smoke_Detector,IE,HMS-IE,1000,"6,5",5
+IE,2,Pocket_Door_Sensor,IE,HMS-IE,4000,"6,5",25
+IE,2,Resistance-Temperature-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,2,Resistance-Pressure-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,2,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+IE,3,Fire,IE,HMS-IE,2000,"6,5",10
+IE,3,Air_Temperature,IE,HMS-IE,2000,"6,5",10
+IE,3,Air_Pressure,IE,HMS-IE,2000,"6,5",10
+IE,3,Smoke_Detector,IE,HMS-IE,4000,"6,5",25
+IE,3,Pocket_Door_Sensor,IE,HMS-IE,4000,"6,5",25
+IE,3,Resistance-Temperature-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,3,Resistance-Pressure-Detector Sensors,IE,ECLSS,1000,"6,7,3",5
+IE,3,Power Consumption Sensor,IE,PW2,200,"6,7,8,4",1
+PW,0,Solar_PV/PV_Arrays,PW1,HMS-PW,4000,"8,4,3,2",25
+PW,0,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,4000,"4,3,2",25
+PW,0,Nuclear_Generator/Coolant,PW2,HMS-PW,4000,"4,3,2",25
+PW,0,SPD/Converter,PW1,HMS-PW,4000,"8,4,3,2",25
+PW,0,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,4,3,2",1
+PW,0,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,0,ECLSS_Consumption,PW1,ECLSS,200,"8,4,3",1
+PW,0,IE_Consumption,PW2,IE,200,"4,8,7,6",1
+PW,1,Solar_PV/PV_Arrays,PW1,HMS-PW,6000,"8,7,6,2",25
+PW,1,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,4000,"4,3,2",25
+PW,1,Nuclear_Generator/Coolant,PW2,HMS-PW,4000,"4,3,2",25
+PW,1,SPD/Converter,PW1,HMS-PW,6000,"8,7,6,2",25
+PW,1,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,7,6,2",1
+PW,1,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,1,ECLSS_Consumption,PW2,ECLSS,200,"4,3",1
+PW,1,IE_Consumption,PW2,IE,200,"4,3,2,6",1
+PW,2,Solar_PV/PV_Arrays,PW1,HMS-PW,4000,"8,7,6,2",25
+PW,2,Nuclear_Generator_Radiator_Panels,PW2,HMS-PW,6000,"4,3,2",25
+PW,2,Nuclear_Generator/Coolant,PW2,HMS-PW,6000,"4,3,2",25
+PW,2,SPD/Converter,PW1,HMS-PW,4000,"8,7,6,2",25
+PW,2,Energy_Storage_Solar_PV,PW1,HMS-PW,200,"8,7,6,2",1
+PW,2,Energy_Storage_Nuclear,PW2,HMS-PW,200,"4,3,2",1
+PW,2,ECLSS_Consumption,PW1,ECLSS,200,"8,7,3",1
+PW,2,IE_Consumption,PW1,IE,200,"8,7,6",1
+HMS,0,Data Aggregation 1,HMS-ECLSS,HMS-Central,200,"1,5,6,7",1
+HMS,0,Data Aggregation 2,HMS-IE,HMS-Central,200,"5,6,7",1
+HMS,0,Data Aggregation 3,HMS-PW,HMS-Central,200,"2,3,7",1
+HMS,0,AG Command 1,HMS-Central,AG1,400,"7,6",2
+HMS,0,AG Command 2,HMS-Central,AG2,400,"7,8,4",2
+HMS,1,Data Aggregation 1,HMS-ECLSS,HMS-Central,200,"1,5,6,7",1
+HMS,1,Data Aggregation 2,HMS-IE,HMS-Central,200,"5,6,7",1
+HMS,1,Data Aggregation 3,HMS-PW,HMS-Central,200,"2,3,4",1
+HMS,1,AG Command 1,HMS-Central,AG1,1000,"7,6,",5
+HMS,1,AG Command 2,HMS-Central,AG2,1000,"7,8,4",5
+AG,0,Diagnostic Tests 1,AG1,HMS-Central,200,"6,7",1
+AG,0,Diagnostic Tests 2,AG2,HMS-Central,200,"4,3,7",1
+AG,0,Intervention Agent Model 1,AG1,HMS-Central,400,"6,7",2
+AG,0,Intervention Agent Model 2,AG2,HMS-Central,400,"4,8,7",2
+AG,1,Diagnostic Tests 1,AG1,HMS-Central,400,"6,7",2
+AG,1,Diagnostic Tests 2,AG2,HMS-Central,400,"4,8,7",2
+AG,1,Intervention Agent Model 1,AG1,HMS-Central,1000,"6,7",5
+AG,1,Intervention Agent Model 2,AG2,HMS-Central,1000,"4,3,7",5

@@ -5,23 +5,36 @@ import networkx as nx
 import random
 import numpy as np
 
-# Define the topology as a directed graph
+
+# Define the new 8-switch topology as a directed graph
 topology = nx.DiGraph()
 
-# Add nodes
-nodes = ['A', 'B', 'C', 'D']
+# Add nodes (S1 to S8)
+nodes = [f'S{i}' for i in range(1, 9)]
 topology.add_nodes_from(nodes)
 
-# Add directed edges with updated link IDs (0 to 7)
+# Define edge mapping as per the testbed figure (2D grid + diagonals)
 edges = {
-    ('A', 'B'): 0, ('B', 'A'): 1,
-    ('B', 'C'): 2, ('C', 'B'): 3,
-    ('C', 'D'): 4, ('D', 'C'): 5,
-    ('D', 'A'): 6, ('A', 'D'): 7
+    ('S1', 'S2'): 0, ('S2', 'S1'): 1,
+    ('S2', 'S3'): 2, ('S3', 'S2'): 3,
+    ('S3', 'S4'): 4, ('S4', 'S3'): 5,
+    ('S1', 'S5'): 6, ('S5', 'S1'): 7,
+    ('S2', 'S6'): 8, ('S6', 'S2'): 9,
+    ('S3', 'S7'): 10, ('S7', 'S3'): 11,
+    ('S4', 'S8'): 12, ('S8', 'S4'): 13,
+    ('S5', 'S6'): 14, ('S6', 'S5'): 15,
+    ('S6', 'S7'): 16, ('S7', 'S6'): 17,
+    ('S7', 'S8'): 18, ('S8', 'S7'): 19,
+    # Diagonals for AG1, AG2, etc.
+    ('S6', 'AG1'): 20, ('AG1', 'S6'): 21,
+    ('S4', 'AG2'): 22, ('AG2', 'S4'): 23
 }
 
 # Add edges to the graph
 topology.add_edges_from(edges.keys())
+
+# Expose the topology and edges globally
+__all__ = ['topology', 'edges']
 
 class App:
     def __init__(self, trial, id, links, T, max_n_states, max_n_flows, max_n_flow_hop):
