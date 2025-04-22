@@ -25,6 +25,7 @@ class Heuristic:
                          for i in range(len(self.apps))]
         
         self.time_dependency = []
+        self.s0_feasibility = True
 
     def run(self):
         for t in range(self.T):
@@ -79,12 +80,12 @@ class Heuristic:
 
 
         flexibility = 0
-        s0_feasibility = True
+
         for i in range(len(self.apps)):
             if self.schedule[i][self.current_states[i]].n_packets_scheduled != self.schedule[i][self.current_states[i]].n_total_packets:
-                s0_feasibility = False
+                self.s0_feasibility = False
                 break
-        if s0_feasibility:
+        if self.s0_feasibility:
             flexibility = self.calculate_flexibility()
 
         return flexibility
@@ -195,8 +196,11 @@ if __name__ == "__main__":
                 txs = [edges[(f"S{path[k]}", f"S{path[k+1]}")] for k in range(len(path)-1)]
                 print(txs)
                 flow_count = row['Flow Count every 5ms']
-                if flow_count >= 10:
+
+                if flow_count >= 10 and len(txs) > 1:
                     flow_count = 10
+                
+                print(flow_count)
                 period = int(50 / flow_count) if flow_count > 0 else T
                 if 50%period != 0:
                     print('false')
@@ -204,14 +208,18 @@ if __name__ == "__main__":
                 state.flows.append(flow)
             app.states.append(state)
         app.n_states = len(app.states)
-        transitions = np.random.rand(app.n_states, app.n_states)
-        app.transitions = transitions / transitions.sum(axis=1, keepdims=True)
-        app.k_max = 10
-        app.M_k = [app.transitions[0]] + [np.linalg.matrix_power(app.transitions, k)[0] for k in range(1, app.k_max+1)]
+
+        #transitions = np.random.rand(app.n_states, app.n_states)
+        #app.transitions = transitions / transitions.sum(axis=1, keepdims=True)
+        app.transitions = app.generate_transitions()
+        app.k_max = app.determine_k_max()
+        #app.M_k = [app.transitions[0]] + [np.linalg.matrix_power(app.transitions, k)[0] for k in range(1, app.k_max+1)]
 
     h = Heuristic(0, random_apps, links=links, T=T, current_states=[0]*len(random_apps))
     h.run()
+    print('s0 feasibility:',h.s0_feasibility)
     print(h.calculate_flexibility())
+    
 
 # Function to export flows information of each app to a CSV file with node, slot, and delay information
 def export_flows_information_with_nodes_to_csv(apps, reverse_edges, time_dependency, filename="flows_information_with_nodes.csv"):
@@ -272,12 +280,20 @@ def export_partition_schedule_to_csv(partition, T, links, filename="partition_sc
     df_partition.to_csv(filename, index=True)
 
 # Example usage
+# Define edge mapping as per the testbed figure (2D grid + diagonals)
 edges = {
-    ('A', 'B'): 0, ('B', 'A'): 1,
-    ('B', 'C'): 2, ('C', 'B'): 3,
-    ('C', 'D'): 4, ('D', 'C'): 5,
-    ('D', 'A'): 6, ('A', 'D'): 7
+    ('S1', 'S2'): 0, ('S2', 'S1'): 1,
+    ('S2', 'S3'): 2, ('S3', 'S2'): 3,
+    ('S3', 'S4'): 4, ('S4', 'S3'): 5,
+    ('S1', 'S5'): 6, ('S5', 'S1'): 7,
+    ('S2', 'S6'): 8, ('S6', 'S2'): 9,
+    ('S3', 'S7'): 10, ('S7', 'S3'): 11,
+    ('S4', 'S8'): 12, ('S8', 'S4'): 13,
+    ('S5', 'S6'): 14, ('S6', 'S5'): 15,
+    ('S6', 'S7'): 16, ('S7', 'S6'): 17,
+    ('S7', 'S8'): 18, ('S8', 'S7'): 19,
 }
+
 reverse_edges = {v: k for k, v in edges.items()}
 export_partition_schedule_to_csv(h.partition, T=h.T, links=h.links, filename="partition_schedule.csv")
 export_flows_information_with_nodes_to_csv(h.apps, reverse_edges, time_dependency=h.time_dependency, filename="flows_information_with_nodes.csv")
