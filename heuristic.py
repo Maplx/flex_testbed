@@ -111,7 +111,7 @@ class Heuristic:
                 weight += gamma**k*self.apps[i].M_k[k][s]
             # higher weight for initial state
             if s == self.current_states[i]:
-                weight = weight*20
+                weight = weight*2000
             gain.value += feasibility_gain*weight
 
         self.partition[t][e].app = -1
@@ -167,11 +167,11 @@ class Heuristic:
 
 
 if __name__ == "__main__":
-    T = 50
+    T = 100
     links = list(edges.values())
 
     # Step 1: Generate random apps as placeholders
-    random_apps = [App(trial=0, id=i, links=links, T=T, max_n_states=4, max_n_flows=5, max_n_flow_hop=3) for i in range(5)]
+    random_apps = [App(trial=21, id=i, links=links, T=T, max_n_states=4, max_n_flows=7, max_n_flow_hop=4) for i in range(5)]
 
     # Step 2: Replace the random content using spreadsheet
     df = pd.read_csv("State_flow_with_Path3.csv")
@@ -197,12 +197,12 @@ if __name__ == "__main__":
                 print(txs)
                 flow_count = row['Flow Count every 5ms']
 
-                if flow_count >= 10 and len(txs) > 1:
-                    flow_count = 10
-                
+                if flow_count > 10 and len(txs) > 2:
+                    #flow_count = 10
+                    flow_count = flow_count
                 print(flow_count)
-                period = int(50 / flow_count) if flow_count > 0 else T
-                if 50%period != 0:
+                period = int(100 / flow_count) if flow_count > 0 else T
+                if 100%period != 0:
                     print('false')
                 flow = Flow(id=len(state.flows), txs=txs, period=period)
                 state.flows.append(flow)
@@ -215,18 +215,19 @@ if __name__ == "__main__":
         app.k_max = app.determine_k_max()
         #app.M_k = [app.transitions[0]] + [np.linalg.matrix_power(app.transitions, k)[0] for k in range(1, app.k_max+1)]
 
-    h = Heuristic(0, random_apps, links=links, T=T, current_states=[0]*len(random_apps))
+    h = Heuristic(0, random_apps, links=links, T=T, current_states=[0,0,2,1,1])
     h.run()
     print('s0 feasibility:',h.s0_feasibility)
     print(h.calculate_flexibility())
     
 
 # Function to export flows information of each app to a CSV file with node, slot, and delay information
-def export_flows_information_with_nodes_to_csv(apps, reverse_edges, time_dependency, filename="flows_information_with_nodes.csv"):
+def export_flows_information_with_nodes_to_csv(h,apps, reverse_edges, time_dependency, filename="flows_information_with_nodes.csv"):
     # Create a list of dictionaries to collect flows information
     flows_info = []
-    for app in apps:
-        for state in app.states:
+    for i in range(len(apps)):
+        app = apps[i]
+        for state in [app.states[h.current_states[i]]]:
             for flow in state.flows:
                 # Reconstruct the node path from links
                 node_path = [reverse_edges[flow.txs[0]][0]]
@@ -296,4 +297,4 @@ edges = {
 
 reverse_edges = {v: k for k, v in edges.items()}
 export_partition_schedule_to_csv(h.partition, T=h.T, links=h.links, filename="partition_schedule.csv")
-export_flows_information_with_nodes_to_csv(h.apps, reverse_edges, time_dependency=h.time_dependency, filename="flows_information_with_nodes.csv")
+export_flows_information_with_nodes_to_csv(h, h.apps, reverse_edges, time_dependency=h.time_dependency, filename="flows_information_with_nodes.csv")
